@@ -1,18 +1,19 @@
 {
-    "name": "thinkadmin-make-file/thinkadmin-make-file",
-    "description": "命令行创建控制器、模型和模板文件",
+    "name": "thinkadmin-custom-tools/thinkadmin-make-file",
+    "description": "命令行创建控制器，模型和模板文件",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "ThinkadminMakeFile\\": "src/"
+            "ThinkadminCustomTools\\ThinkadminMakeFile\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Ericsen"
+            "name": "Ericsen",
+            "email": "Ericsen@qq.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {}
 }
