@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "ThinkadminCustomTools\\ThinkadminMakeFile\\": "src/"
+            "ThinkadminMakeFile\\": "src/"
         }
     },
     "authors": [

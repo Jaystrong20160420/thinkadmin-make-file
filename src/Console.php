@@ -1,6 +1,8 @@
 <?php
 
-namespace ThinkadminCustomTools\ThinkadminMakeFile;
+namespace ThinkadminMakeFile;
+
+use think\App;
 
 class Console
 {
@@ -9,10 +11,13 @@ class Console
      */
     private $argv;
 
+    private $app;
+
     /**
+     * @param App $app
      * @param $argv
      */
-    public function __construct($argv = null)
+    public function __construct(App $app, $argv = null)
     {
         if (null === $argv) {
             $this->argv = $_SERVER['argv'];
@@ -20,5 +25,6 @@ class Console
             // 去除命令名
             array_shift($this->argv);
         }
+        print_r($app->getBasePath());die;
     }
 }
