@@ -1,0 +1,18 @@
+{
+    "name": "thinkadmin-make-file/thinkadmin-make-file",
+    "description": "命令行创建控制器、模型和模板文件",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ThinkadminMakeFile\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ericsen"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
