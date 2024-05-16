@@ -2,5 +2,5 @@
 <?php
 require './vendor/autoload.php';
 use ThinkadminMakeFile\Console;
-//
-(new Console(new \think\App(), $argv));
+
+(new Console(new \think\App(), $argv))->run();
