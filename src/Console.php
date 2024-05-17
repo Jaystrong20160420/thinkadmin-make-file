@@ -17,8 +17,15 @@ class Console
 
     private $app;
 
+    const MODE_LIST = [
+        '--layui',
+        '-l',
+        '--static',
+        '-s'
+    ];
+
     protected $defaultCommands = [
-//        'make:set'        => Controller::class,
+        'make:set'        => '',
         'make:controller' => Controller::class,
         'make:model'      => Model::class,
         'make:view'       => View::class,
@@ -38,10 +45,12 @@ class Console
 
         if (!in_array($this->argv[0], array_keys($this->defaultCommands))) {
             echo "命令不存在";
+            return false;
         }
 
         if (!isset($this->argv[1])) {
             echo '请输出要创建的类名';
+            return false;
         }
     }
 
@@ -67,15 +76,23 @@ class Console
 
         $command = $this->argv[0];
         $name = $this->argv[1];
+        $mode = $this->argv[2] ?? '--layui';
+
+        if (!in_array($mode, self::MODE_LIST)) {
+            echo '错误的模式。可用模式：--layui、-l、--static、-s';
+            return false;
+        }
 
         if ($command == 'make:set') {
-            (new Controller($this->app))->execute($name);
-            (new Model($this->app))->execute($name);
-            (new View($this->app))->execute($name);
+            (new Controller($this->app, $mode))->execute($name);
+            if (in_array($mode, ['--layui', '-l'])) {
+                (new Model($this->app, $mode))->execute($name);
+            }
+            (new View($this->app, $mode))->execute($name);
         } else {
             /**@var Make $make */
             $make = $this->defaultCommands[$command];
-            (new $make($this->app))->execute($name);
+            (new $make($this->app, $mode))->execute($name);
         }
     }
 }

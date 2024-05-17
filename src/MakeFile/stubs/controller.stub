@@ -1,85 +1,94 @@
 <?php
-declare (strict_types = 1);
+
+// +----------------------------------------------------------------------
+// | Admin Plugin for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2023 ThinkAdmin [ thinkadmin.top ]
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
+// | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
+// +----------------------------------------------------------------------
 
 namespace {%namespace%};
 
-use think\Request;
+use think\admin\Controller;
 
-class {%className%}
+/**
+ * xxxxx
+ * @class {%className%}
+ * @package {%namespace%}
+ */
+class {%className%} extends Controller
 {
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function index{%actionSuffix%}()
+
+    public $table = 'xxxx';
+
+
+    public function index()
     {
-        //
+        $this->title = 'xxx列表';
+
+        $query = $this->_query($this->table);
+        $query->where(['is_deleted' => 0]);
+        $query->like('name')->equal('status');
+        // 列表排序并显示
+        $query->order('id desc')->page();
+    }
+
+    public function _page_filter(&$data)
+    {
+
     }
 
     /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
+     * 添加
+     * @auth true
      */
-    public function create{%actionSuffix%}()
+    public function add()
     {
-        //
+        $this->_form($this->table, 'form');
+    }
+
+
+    /**
+     * 编辑
+     * @auth true
+     */
+    public function edit()
+    {
+        $this->_form($this->table, 'form');
+    }
+
+    // 表单数据处理
+    protected function _form_filter(array &$data)
+    {
+
     }
 
     /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
+     * 表单提交成功处理
+     * @param $res
+     * @param $data
      */
-    public function save{%actionSuffix%}(Request $request)
+    protected function _form_result(&$res, &$data)
     {
-        //
+        $title = $this->request->post('id') ? '修改' : '新增';
+        sysoplog($title . 'xxx', json_encode($this->request->post(), 256));
     }
 
     /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
+     * 删除
+     * @auth true
      */
-    public function read{%actionSuffix%}($id)
+    public function remove()
     {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit{%actionSuffix%}($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update{%actionSuffix%}(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function delete{%actionSuffix%}($id)
-    {
-        //
+        $id = $this->request->post('id');
+        // sysoplog('删除xxxxx', json_encode($this->request->post(), 256));
+        $this->_delete($this->table, 'id');
     }
 }

@@ -1,1 +1,89 @@
-form
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" data-table-id="RoleTable">
+
+    <div class="layui-card-body padding-left-40">
+
+        <label class="layui-form-item relative block">
+            <span class="help-label"><b>{:lang('名称')}</b>Name</span>
+            <input maxlength="100" class="layui-input" name="title" value='{$vo.title|default=""}' required vali-name="{:lang('名称')}" placeholder="{:lang('请输入名称')}">
+            <span class="help-block">{:lang('访问名称需要保持不重复')}</span>
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="help-label"><b>下拉框</b></span>
+            <select name="platform_id" lay-verify="required" required>
+                <option value="">请选择</option>
+                {if isset($platform_list)}
+                {foreach $platform_list as $platform}
+                <option value="{$platform.id}" {if condition="isset($vo.platform_id) && $platform.id eq $vo.platform_id"}selected{/if}>{$platform.name}</option>
+                {/foreach}
+                {/if}
+            </select>
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="help-label"><b>类型</b></span>
+            <div class="layui-input help-checks">
+                <label class="think-checkbox">
+                    <input type="radio" name="role_type" value="DEFAULT" lay-ignore=""
+                           {if !isset($vo.role_type) || (isset($vo.role_type) && $vo.role_type=='DEFAULT')}checked{/if}
+                    >默认
+                </label>
+                <label class="think-checkbox">
+                    <input type="radio" name="role_type" value="DEVELOPER" lay-ignore=""
+                           {if isset($vo.role_type) && $vo.role_type=='DEVELOPER'}checked{/if}
+                    >开发者
+                </label>
+            </div>
+            <span class="help-block">开发者：用户能管理所有账号</span>
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="help-label"><b>多选框</b></span>
+            <div class="layui-textarea help-checks">
+                <label class="think-checkbox"><input type="checkbox"  name="project_ids[]" value="选项1" lay-ignore=""><span style="color: #009688">选项1</span></label>
+                <label class="think-checkbox"><input type="checkbox"  name="project_ids[]" value="选项2" lay-ignore=""><span style="color: #009688">选项2</span></label>
+                {if isset($project_list)}
+                    {foreach $project_list as $project}
+                    <label class="think-checkbox">
+                        <input type="checkbox"  name="project_ids[]" value="{$project.id}" lay-ignore="" title=""
+                               {if isset($vo.project_ids) && in_array($project.id, $vo.project_ids)}checked{/if}
+                        >
+                        <span style="color: #009688">{$project.name}</span>
+                    </label>
+                    {/foreach}
+                {/if}
+            </div>
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="help-label"><b>时间日期</b></span>
+            <input type="text" name="s_create_time" class="layui-input" id="s_create_time" value="{$vo.s_create_time|default=''}" style="width: 30%;">
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="help-label"><b>{:lang('描述')}</b>Description</span>
+            <textarea placeholder="{:lang('请输入描述')}" maxlength="200" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
+        </label>
+
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>{:lang('保存数据')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>{:lang('取消编辑')}</button>
+    </div>
+</form>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#s_create_time' //指定元素
+            ,format: 'yyyy-MM-dd HH:mm:ss'
+            ,type: 'datetime'
+        });
+    });
+</script>

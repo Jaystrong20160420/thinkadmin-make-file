@@ -1,1 +1,88 @@
-index
+{extend name='table'}
+
+
+{block name="button"}
+<!--{if auth("add_none")}-->
+<button data-modal='{:url("add")}' data-title="添加" class='layui-btn layui-btn-sm layui-btn-primary'>添加</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="layui-tab layui-tab-card think-bg-white table-block">
+    <div class="layui-tab-content think-box-shadow table-block table-block">
+        <fieldset>
+            <legend>条件搜索</legend>
+            <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">名称</label>
+                    <label class="layui-input-inline">
+                        <input name="name" value="{:input('get.name')}" placeholder="请输入名称" class="layui-input">
+                    </label>
+                </div>
+
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <select name='status' class='layui-select full-width' lay-ignore>
+                            <option value="" {if condition=" input('get.status') eq ''"} selected {/if} >-全部-</option>
+                            <option {if condition="input('get.status') eq 1 && input('get.status')!=''"} selected {/if} value='1'>使用中</option>
+                            <option {if condition="input('get.status') eq 0 && input('get.status')!=''"} selected {/if} value='0'>已禁用</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">{:lang('创建时间')}</label>
+                    <div class="layui-input-inline">
+                        <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="{:lang('请选择创建时间')}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                </div>
+            </form>
+        </fieldset>
+
+        <script>form.render()</script>
+
+        <table class="layui-table margin-top-10" lay-skin="line">
+            {notempty name='list'}
+            <thead>
+            <tr>
+                <th class='text-center nowrap'>ID</th>
+                <th class='text-center nowrap'>名称</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            {/notempty}
+            <tbody>
+            {foreach $list as $key=>$vo}
+            <tr data-dbclick>
+                <td class='text-center nowrap'>
+                    {$vo.id}
+                </td>
+                <td class='text-center nowrap'>
+                    {$vo.name}
+                </td>
+
+                <td class='text-center nowrap'>
+                    {if auth("edit")}
+                    <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    {/if}
+                    {if auth("remove")}
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-confirm="确定要删除吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <button id="copy_url" style="display: none"></button>
+        {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    </div>
+
+    <script>
+
+    </script>
+</div>
+{/block}

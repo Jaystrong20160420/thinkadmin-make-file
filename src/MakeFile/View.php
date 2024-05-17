@@ -66,7 +66,7 @@ class View extends Make
         $dir = __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR;
 
         return [
-            'index' => file_get_contents($dir . 'index.stub'),
+            'index' => file_get_contents(($this->mode == '--layui' || $this->mode == '-l') ? $dir . 'index.laytable.stub' : $dir . 'index.stub'),
             'form'  => file_get_contents($dir . 'form.stub'),
         ];
     }

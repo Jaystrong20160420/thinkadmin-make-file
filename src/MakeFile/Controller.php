@@ -16,7 +16,9 @@ class Controller extends Make
      */
     protected function getStub()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'controller.stub';
+        $dir =  __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR;
+
+        return ($this->mode == '--layui' || $this->mode == '-l') ? $dir . 'controller.laytable.stub' : $dir . 'controller.stub';
     }
 
     protected function getClassName(string $name): string

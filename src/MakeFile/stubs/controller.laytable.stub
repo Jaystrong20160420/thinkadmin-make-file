@@ -1,0 +1,86 @@
+<?php
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use think\Request;
+use app\admin\model\{%className%}Model;
+use think\admin\helper\QueryHelper;
+
+/**
+ *
+ * @class {%className%}
+ * @package {%namespace%}
+ */
+class {%className%}
+{
+    public function index{%actionSuffix%}()
+    {
+        {%className%}Model::mQuery()->layTable(function () {
+            $this->title = '系统权限管理';
+        }, static function (QueryHelper $query) {
+            $query->like('title,descs')->equal('status,utype')->dateBetween('create_at');
+        });
+    }
+
+    protected function _page_filter(&$data)
+    {
+
+    }
+
+    /**
+     * 添加
+     * @auth true
+     */
+    public function add{%actionSuffix%}()
+    {
+        {%className%}Model::mForm('form');
+    }
+
+    /**
+     * 编辑
+     * @auth true
+     */
+    public function edit{%actionSuffix%}()
+    {
+        {%className%}Model::mForm('form');
+    }
+
+    // 表单提交前处理
+    protected function _form_filter(array &$data)
+    {
+
+    }
+
+    /**
+     * 表单提交成功处理
+     * @param $res
+     * @param $data
+     */
+    protected function _form_result(&$res, &$data)
+    {
+        $op_title = $this->request->post('id') ? '修改' : '新增';
+        sysoplog($op_title . 'xxxx', json_encode($this->request->post(), 256));
+    }
+
+    /**
+     * 修改
+     * @auth true
+     */
+    public function state{%actionSuffix%}()
+    {
+        {%className%}Model::mSave($this->_vali([
+            'status.in:0,1'  => '状态值范围异常！',
+            'status.require' => '状态值不能为空！',
+        ]));
+    }
+
+    /**
+     * 删除
+     * @auth true
+     */
+    public function remove{%actionSuffix%}()
+    {
+        {%className%}Model::mDelete();
+    }
+}
