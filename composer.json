@@ -14,6 +14,14 @@
             "email": "Ericsen@qq.com"
         }
     ],
+    "scripts": {
+        "post-install-cmd": [
+            "php scripts/post-install.php"
+        ],
+        "post-update-cmd": [
+            "php scripts/post-install.php"
+        ]
+    },
     "minimum-stability": "dev",
     "require": {
         "topthink/framework": "^6.0|^8.0|*"
