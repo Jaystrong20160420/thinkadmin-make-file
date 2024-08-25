@@ -3,7 +3,7 @@ declare (strict_types = 1);
 
 namespace {%namespace%};
 
-use think\Request;
+use think\admin\Controller;
 use app\admin\model\{%className%}Model;
 use think\admin\helper\QueryHelper;
 
@@ -12,8 +12,17 @@ use think\admin\helper\QueryHelper;
  * @class {%className%}
  * @package {%namespace%}
  */
-class {%className%}
+class {%className%} extends Controller
 {
+    /**
+     * @auth true
+     * @menu true
+     *
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function index{%actionSuffix%}()
     {
         {%className%}Model::mQuery()->layTable(function () {
