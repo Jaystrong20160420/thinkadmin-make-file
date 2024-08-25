@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' data-table-id="RoleTable" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加')}</button>
+<button data-modal='{:url("add")}' data-table-id="RoleTable" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加')}</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
@@ -111,7 +111,7 @@
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="ToolbarRoleTableTpl">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-open='{:url("edit")}?id={{d.id}}'>{:lang("编 辑")}</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-modal='{:url("edit")}?id={{d.id}}'>{:lang("编 辑")}</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->
