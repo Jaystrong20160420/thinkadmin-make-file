@@ -11,7 +11,12 @@ use think\model\concern\SoftDelete;
  */
 class {%className%} extends Model
 {
+    protected $table = '{%className%}';
+
     use SoftDelete;
 
     protected $autoWriteTimestamp = 'datetime';
+    protected $createTime = 'create_time';
+    protected $updateTime = 'update_time';
+    protected $deleteTime = 'deleted_at';
 }
