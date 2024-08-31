@@ -1,17 +1,10 @@
-# thinkadmin-make-file
+1.命令php thinkadmin
+创建crud、创建菜单
+2.创建crud php thinkadmin crud -t test 
+    layui模式：创建控制器、模型、视图、验证类
+    普通模式：创建控制器、视图、验证类
+3.创建菜单 php thinkadmin menu add test     
+    根据表名创建菜单
 
-命令行创建控制器、模型和模板文件
-
-1. 一键创建控制器、模型和模板文件
-
-`php thinkadmin make:set admin@Test`
-
-1. 单独创建控制器
-
-`php thinkadmin make:controller admin@Test`
-
-1. 单独创建模型
-
-`php thinkadmin make:model admin@Test`
-
-1. 单独创建模板文件
+表名：test
+根据表名获取数据库的该数据表的表名注释、字段、字段注释、
