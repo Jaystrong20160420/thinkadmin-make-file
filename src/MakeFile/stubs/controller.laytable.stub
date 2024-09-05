@@ -68,8 +68,7 @@ class {%className%} extends Controller
      */
     protected function _form_result(&$res, &$data)
     {
-        $op_title = $this->request->post('id') ? '修改' : '新增';
-        sysoplog($op_title . 'xxxx', json_encode($this->request->post(), 256));
+
     }
 
     /**

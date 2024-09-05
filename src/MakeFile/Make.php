@@ -3,6 +3,7 @@
 namespace ThinkadminMakeFile\MakeFile;
 
 use think\App;
+use think\console\Input;
 
 abstract class Make
 {
@@ -16,10 +17,21 @@ abstract class Make
      */
     protected $type = '';
 
-    public function __construct(App $app, $mode)
+    /**
+     * @var Input $input
+     */
+    protected $input;
+
+    /**
+     * @var string $mode
+     */
+    protected $mode;
+
+    public function __construct(App $app, Input $input)
     {
-        $this->app  = $app;
-        $this->mode = $mode;
+        $this->app   = $app;
+        $this->input = $input;
+        $this->mode  = $input->getOption('mode');
     }
 
     /**

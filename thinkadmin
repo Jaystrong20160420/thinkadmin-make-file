@@ -24,4 +24,4 @@ require __DIR__ . '/vendor/autoload.php';
 // app初始化
 $app = RuntimeService::init();
 
-(new Console($app, $argv))->run();
+(new Console($app))->run();
