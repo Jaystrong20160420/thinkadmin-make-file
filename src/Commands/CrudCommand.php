@@ -8,14 +8,9 @@ use think\console\Input;
 use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
-use ThinkadminMakeFile\Consts\MakeConst;
 use ThinkadminMakeFile\Consts\OptionConst;
-use ThinkadminMakeFile\MakeFile\Controller;
-use ThinkadminMakeFile\MakeFile\Make;
-use ThinkadminMakeFile\MakeFile\Model;
-use ThinkadminMakeFile\MakeFile\View;
+use ThinkadminMakeFile\Services\CrudHandler;
 use ThinkadminMakeFile\Services\NamespaceService;
-use ThinkadminMakeFile\Services\TableInfoService;
 use think\facade\Validate;
 
 class CrudCommand extends Command
@@ -36,43 +31,24 @@ class CrudCommand extends Command
     {
         // 验证参数与选项
         $this->validateParametersAndOptions($input, $output);
-        // -t 创建 -c 创建指定的二级目录和控制器名
-        // app\admin\controller
-        // app\admin\model
-        // app\admin\view\test\index
-        // app\admin\view\test\form
-        // -d 删除
-        // -u 生成菜单
-        // -u -d 删除菜单
-//        if ($input->getOption('mode'))
 
         $tablename = $input->getOption('table');
+        $isDelete  = $input->getOption('delete');
+        $isMenu    = $input->getOption('menu');
+
+        // 命名空间服务
         $namespaceService = new NamespaceService($tablename, $input);
-        echo '<pre>'; var_dump($namespaceService->controllerName(),
-        $namespaceService->modelName(),
-        $namespaceService->viewName(),
-        $namespaceService->viewList());
-die;
+        $crudHandler      = new CrudHandler($this->app, $namespaceService, $input);
 
-
-        $info = (new TableInfoService())->getTableInfo('image');
-        echo '<pre>';
-        print_r($info);
-        die;
-        // -t 表名 根据表名获取
-//        if ($command == 'make:set') {
-//            (new Controller($this->app, $mode))->execute($name);
-//            if (in_array($mode, ['--layui', '-l'])) {
-//                (new Model($this->app, $mode))->execute($name);
-//            }
-//            (new View($this->app, $mode))->execute($name);
-//        } else {
-//            /**@var Make $make */
-//            $make = $this->defaultCommands[$command];
-//            (new $make($this->app, $mode))->execute($name);
-//        }
-
-        $output->writeln('一键生成CRUD代码');
+        if ($isDelete == OptionConst::NO) {
+            $crudHandler->create();// 一键创建
+            if (!$isMenu == OptionConst::YES) {
+                // 创建菜单********************************************
+            }
+            $output->writeln('一键生成CRUD代码');
+        } else {
+            $crudHandler->delete();// 一键删除
+        }
     }
 
     /**

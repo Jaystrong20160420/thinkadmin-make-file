@@ -11,7 +11,7 @@ use think\model\concern\SoftDelete;
  */
 class {%className%} extends Model
 {
-    protected $table = '{%className%}';
+    protected $table = '{%tableName%}';
 
     use SoftDelete;
 

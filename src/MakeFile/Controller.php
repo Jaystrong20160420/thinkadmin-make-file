@@ -2,6 +2,8 @@
 
 namespace ThinkadminMakeFile\MakeFile;
 
+use ThinkadminMakeFile\Consts\OptionConst;
+
 class Controller extends Make
 {
     /**
@@ -16,18 +18,52 @@ class Controller extends Make
      */
     protected function getStub()
     {
-        $dir =  __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR;
+        $dir = __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR;
 
-        return ($this->mode == '--layui' || $this->mode == '-l') ? $dir . 'controller.laytable.stub' : $dir . 'controller.stub';
+        return ($this->mode == OptionConst::MODE_LAYUI) ? $dir . 'controller.laytable.stub' : $dir . 'controller.stub';
     }
 
-    protected function getClassName(string $name): string
+    /**
+     * 获取类名
+     *
+     * @return string
+     */
+    protected function getClassName(): string
     {
-        return parent::getClassName($name) . ($this->app->config->get('route.controller_suffix') ? 'Controller' : '');
+        return $this->namespaceService->controllerName();
     }
 
-    protected function getNamespace(string $app): string
+    /**
+     * 获取控制器文件路径
+     *
+     * @return string
+     */
+    protected function getPathName()
     {
-        return parent::getNamespace($app) . '\\controller';
+        return $this->namespaceService->getControllerPathName();
+    }
+
+    /**
+     * 模板替换标记列表
+     *
+     * @return string[]
+     */
+    protected function stubSearches()
+    {
+        return ['{%className%}', '{%actionSuffix%}', '{%namespace%}'];
+    }
+
+    /**
+     * 模板替换内容列表
+     *
+     * @return array
+     */
+    protected function stubReplaces()
+    {
+        return [
+            $this->namespaceService->getControllerClassName(),
+            $this->app->config->get('route.action_suffix'),
+            $this->namespaceService->getControllerNamespace()
+        ];
     }
 }

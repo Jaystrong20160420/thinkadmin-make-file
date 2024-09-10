@@ -22,22 +22,44 @@ class Model extends Make
     /**
      * 获取类名
      *
-     * @param string $name
      * @return string
      */
-    protected function getClassName(string $name): string
+    protected function getClassName(): string
     {
-        return parent::getClassName($name) . 'Model';
+        return $this->namespaceService->modelName();
     }
 
     /**
-     * 获取命名空间
+     * 获取模型文件路径
      *
-     * @param string $app
      * @return string
      */
-    protected function getNamespace(string $app): string
+    protected function getPathName()
     {
-        return parent::getNamespace($app) . '\\model';
+        return $this->namespaceService->getModelPathName();
+    }
+
+    /**
+     * 模板替换标记列表
+     *
+     * @return string[]
+     */
+    protected function stubSearches()
+    {
+        return ['{%className%}', '{%tableName%}', '{%namespace%}'];
+    }
+
+    /**
+     * 模板替换内容列表
+     *
+     * @return array
+     */
+    protected function stubReplaces()
+    {
+        return [
+            $this->namespaceService->getModelClassName(),
+            $this->namespaceService->getTableName(),
+            $this->namespaceService->getModelNamespace()
+        ];
     }
 }

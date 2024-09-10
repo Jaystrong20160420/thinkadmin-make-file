@@ -35,12 +35,19 @@ class NamespaceService
      */
     private $controllerDir;
 
+    /**
+     * @var string 项目根目录
+     */
+    private $projectBasePath;
+
 
     public function __construct($tablename, Input $input)
     {
         $this->tablename = $tablename;
         $this->mode      = $input->getOption('mode');
         $this->app       = app();
+
+        $this->projectBasePath = $this->app->getRootPath();
 
         $this->customControllerName = $input->getOption('controller');
 
@@ -61,6 +68,15 @@ class NamespaceService
         }
     }
 
+    /**
+     * 表名
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tablename;
+    }
 
     /**
      * 控制器名
@@ -71,7 +87,7 @@ class NamespaceService
     {
         $controllerName = $this->customControllerName ?: $this->getUpperCaseTableName();
 
-        return $this->namespace . '\\' . 'controller' . '\\' . $controllerName . ($this->app->config->get('route.controller_suffix') ? 'Controller' : '');
+        return $this->getControllerNamespace() . '\\' . $controllerName . ($this->app->config->get('route.controller_suffix') ? 'Controller' : '');
     }
 
     /**
@@ -81,9 +97,14 @@ class NamespaceService
      */
     public function modelName()
     {
-        return $this->namespace . '\\' . 'model'.  ($this->controllerDir ? '\\' . $this->controllerDir : '') . '\\' . $this->getUpperCaseTableName() . 'Model';
+        return $this->getModelNamespace() .  ($this->controllerDir ? '\\' . $this->controllerDir : '') . '\\' . $this->getUpperCaseTableName() . 'Model';
     }
 
+    /**
+     * 视图文件名
+     *
+     * @return string
+     */
     public function viewName()
     {
         return $this->viewRoot() . '\\' . $this->tablename;
@@ -102,6 +123,96 @@ class NamespaceService
             'index' => $this->viewRoot() . '\\' . $this->tablename . '\\' . 'index.html',
             'form'  => $this->viewRoot() . '\\' . $this->tablename . '\\' . 'form.html',
         ];
+    }
+
+    /**
+     * 控制器文件路径
+     *
+     * @return string
+     */
+    public function getControllerPathName()
+    {
+        return $this->projectBasePath . ltrim(str_replace('\\', '/', $this->controllerName()), '/') . '.php';
+    }
+
+    /**
+     * 模型文件路径
+     *
+     * @return string
+     */
+    public function getModelPathName()
+    {
+        return $this->projectBasePath . ltrim(str_replace('\\', '/', $this->modelName()), '/') . '.php';
+    }
+
+    /**
+     * 视图文件路径：index.html
+     *
+     * @return string
+     */
+    public function getViewIndexPathName()
+    {
+        return $this->projectBasePath . ltrim(str_replace('\\', '/', $this->viewList()['index']), '/');
+    }
+
+    /**
+     * 视图文件路径：form.html
+     *
+     * @return string
+     */
+    public function getViewFormPathName()
+    {
+        return $this->projectBasePath . ltrim(str_replace('\\', '/', $this->viewList()['form']), '/');
+    }
+
+    /**
+     * 视图文件根目录
+     *
+     * @return string
+     */
+    public function getViewDirPathName()
+    {
+        return $this->projectBasePath . ltrim(str_replace('\\', '/', $this->viewRoot() . '\\' . $this->tablename), '/');
+    }
+
+    /**
+     * 控制器类名
+     *
+     * @return string
+     */
+    public function getControllerClassName()
+    {
+        return $this->getUpperCaseTableName();
+    }
+
+    /**
+     * 模型类名
+     *
+     * @return string
+     */
+    public function getModelClassName()
+    {
+        return $this->getUpperCaseTableName() . 'Model';
+    }
+
+    /**
+     * 控制器命名空间
+     *
+     * @return string
+     */
+    public function getControllerNamespace()
+    {
+        return $this->namespace . '\\' . 'controller';
+    }
+
+    /**
+     * 模型命名空间
+     *
+     * @return string
+     */
+    public function getModelNamespace()
+    {
+        return $this->namespace . '\\' . 'model';
     }
 
     /**
