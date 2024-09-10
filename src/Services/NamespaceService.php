@@ -85,7 +85,7 @@ class NamespaceService
      */
     public function controllerName()
     {
-        $controllerName = $this->customControllerName ?: $this->getUpperCaseTableName();
+        $controllerName = $this->getControllerClassName();
 
         return $this->getControllerNamespace() . '\\' . $controllerName . ($this->app->config->get('route.controller_suffix') ? 'Controller' : '');
     }
@@ -182,8 +182,9 @@ class NamespaceService
      */
     public function getControllerClassName()
     {
-        return $this->getUpperCaseTableName();
+        return $this->customControllerName ?: $this->getUpperCaseTableName();
     }
+
 
     /**
      * 模型类名
@@ -195,6 +196,7 @@ class NamespaceService
         return $this->getUpperCaseTableName() . 'Model';
     }
 
+
     /**
      * 控制器命名空间
      *
@@ -202,7 +204,7 @@ class NamespaceService
      */
     public function getControllerNamespace()
     {
-        return $this->namespace . '\\' . 'controller';
+        return $this->namespace . '\\' . 'controller' . ($this->controllerDir ? '\\' . $this->controllerDir : '');
     }
 
     /**
@@ -222,7 +224,7 @@ class NamespaceService
      */
     private function viewRoot()
     {
-        return $this->namespace . '\\' . 'view' .  ($this->controllerDir ? '\\' . $this->controllerDir : '');
+        return $this->namespace . '\\' . 'view' .  ($this->controllerDir ? '\\' . $this->controllerDir : '') . '\\';
     }
 
     /**
